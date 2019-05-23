@@ -30,8 +30,8 @@ function createWrapCreateServer (tracer, config) {
 module.exports = [
   {
     name: 'http2',
-    versions: ['>=4'],
     patch (http2, tracer, config) {
+      // TODO: return if there isn't a server config given
       this.wrap(http2, 'createServer', createWrapCreateServer(tracer, config))
       this.wrap(http2, 'createSecureServer', createWrapCreateServer(tracer, config))
     },
