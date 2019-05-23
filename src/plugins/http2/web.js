@@ -106,27 +106,26 @@ function startSpan (tracer, config, stream, headers, name) {
   return span
 }
 
-function wrapStreamEmit (stream) {
+function finishSpan (stream) {
+  if (stream._datadog.finished) return
+
   const span = stream._datadog.span
 
+  stream._datadog.config.hooks.stream(span, stream)
+
+  stream._datadog.span.finish()
+  stream._datadog.finished = true
+}
+
+function wrapStreamEmit (stream) {
   shimmer.wrap(stream, 'emit', wrapEmit)
 
   function wrapEmit (emit) {
     return function emitWithTrace (event, args) {
       if (event === 'error') {
-        const error = args
-        span.addTags({
-          'error.type': error.name,
-          'error.msg': error.message,
-          'error.stack': error.stack
-        })
+        addErrorTags(stream, args)
       } else if (event === 'close') {
-        if (stream._datadog.finished) return
-
-        stream._datadog.config.hooks.stream(span, stream)
-
-        stream._datadog.span.finish()
-        stream._datadog.finished = true
+        finishSpan(stream)
       }
 
       return emit.apply(this, arguments)
@@ -158,6 +157,14 @@ function wrapStreamRespond (stream) {
       return respondWithFile.apply(this, arguments)
     }
   }
+}
+
+function addErrorTags (stream, error) {
+  stream._datadog.span.addTags({
+    'error.type': error.name,
+    'error.msg': error.message,
+    'error.stack': error.stack
+  })
 }
 
 function addStreamTags (stream, headers) {
