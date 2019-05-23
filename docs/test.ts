@@ -108,6 +108,12 @@ tracer.use('http', {
 tracer.use('http', {
   client: httpClientOptions
 });
+tracer.use('http2', {
+  server: httpServerOptions
+});
+tracer.use('http2', {
+  client: httpClientOptions
+});
 tracer.use('ioredis');
 tracer.use('knex');
 tracer.use('koa');

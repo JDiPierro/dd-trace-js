@@ -314,6 +314,7 @@ interface Plugins {
   "graphql": plugins.graphql;
   "hapi": plugins.hapi;
   "http": plugins.http;
+  "http2": plugins.http2;
   "ioredis": plugins.ioredis;
   "knex": plugins.knex;
   "koa": plugins.koa;

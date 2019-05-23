@@ -18,7 +18,15 @@ const tags = {
   HTTP_STATUS_CODE: 'http.status_code',
   HTTP_ROUTE: 'http.route',
   HTTP_REQUEST_HEADERS: 'http.request.headers',
-  HTTP_RESPONSE_HEADERS: 'http.response.headers'
+  HTTP_RESPONSE_HEADERS: 'http.response.headers',
+
+  // HTTP2
+  HTTP2_URL: 'http2.url',
+  HTTP2_METHOD: 'http2.method',
+  HTTP2_STATUS_CODE: 'http2.status_code',
+  HTTP2_ROUTE: 'http2.route',
+  HTTP2_REQUEST_HEADERS: 'http2.stream.headers',
+  HTTP2_RESPONSE_HEADERS: 'http2.stream.headers'
 }
 
 // Deprecated
